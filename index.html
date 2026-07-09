@@ -1,97 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Platform</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
 
-<title>Blog Platform</title>
-
-<link rel="stylesheet" href="css/style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-
 <body>
 
 <!-- Navbar -->
 
-<header>
+<nav class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-blog"></i>
+        Blog Platform
+    </div>
 
-<div class="logo">
-
-<i class="fa-solid fa-blog"></i>
-
-<h2>BlogHub</h2>
-
-</div>
-
-<nav>
-
-<a href="index.html">Home</a>
-
-<a href="create.html">Create Post</a>
-
-<a href="login.html">Login</a>
-
-<a href="register.html">Register</a>
-
+    <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="create.html">Create Blog</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+    </ul>
 </nav>
-
-</header>
 
 <!-- Hero -->
 
 <section class="hero">
+    <h1>Share Your Ideas With The World</h1>
 
-<div class="hero-content">
+    <p>
+        Create blogs, read articles and interact with comments.
+    </p>
 
-<h1>Welcome to BlogHub</h1>
-
-<p>
-
-Share your thoughts, stories and ideas with the world.
-
-</p>
-
-<a href="create.html" class="btn">
-
-Create Your First Blog
-
-</a>
-
-</div>
-
+    <a href="create.html" class="btn">
+        Write Blog
+    </a>
 </section>
 
 <!-- Search -->
 
-<section class="search">
+<section class="search-box">
 
-<input
-
-type="text"
-
-id="searchInput"
-
-placeholder="Search blog posts...">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search blog title..."
+        onkeyup="searchBlogs()">
 
 </section>
 
-<!-- Blog Posts -->
+<!-- Blog Container -->
 
 <section class="blogs">
 
-<h2>Latest Blog Posts</h2>
+    <div id="blogContainer" class="blog-grid">
 
-<div id="blogContainer" class="blog-grid">
-
-<!-- Dynamic Blogs -->
-
-</div>
+    </div>
 
 </section>
 
@@ -99,16 +68,15 @@ placeholder="Search blog posts...">
 
 <footer>
 
-<p>
+    <h3>Blog Platform</h3>
 
-© 2026 BlogHub | Frontend Blog Platform
-
-</p>
+    <p>
+        Frontend Project using HTML, CSS and JavaScript.
+    </p>
 
 </footer>
 
-<script src="js/app.js"></script>
+<script src="js/script.js"></script>
 
 </body>
-
 </html>
