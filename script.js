@@ -1,350 +1,338 @@
-// Default blogs (shown on first visit)
+// Load blogs from localStorage or create default blogs only once
 
-let blogs = JSON.parse(localStorage.getItem("blogs")) || [
+let blogs = JSON.parse(localStorage.getItem("blogs"));
 
-{
-    id:1,
-    title:"Getting Started with Web Development",
-    author:"Admin",
-    image:"https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800",
-    content:"Web development is one of the most popular skills today. Learn HTML, CSS and JavaScript to start building amazing websites.",
-    likes:0,
-    comments:[
+if (!blogs) {
+    blogs = [
         {
-            name:"John",
-            text:"Very useful article!"
+            id: 1,
+            title: "Getting Started with Web Development",
+            author: "Admin",
+            image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800",
+            content: "Web development is one of the most popular skills today. Learn HTML, CSS and JavaScript to start building amazing websites.",
+            likes: 0,
+            comments: [
+                {
+                    name: "John",
+                    text: "Very useful article!"
+                }
+            ]
+        },
+        {
+            id: 2,
+            title: "JavaScript Tips for Beginners",
+            author: "Admin",
+            image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
+            content: "JavaScript makes websites interactive. Practice DOM manipulation and Events daily.",
+            likes: 0,
+            comments: []
+        },
+        {
+            id: 3,
+            title: "Why Learn Java?",
+            author: "Admin",
+            image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800",
+            content: "Java is widely used in enterprise applications, backend development and Android.",
+            likes: 0,
+            comments: []
         }
-    ]
-},
+    ];
 
-{
-    id:2,
-    title:"JavaScript Tips for Beginners",
-    author:"Admin",
-    image:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
-    content:"JavaScript makes your websites interactive. Practice DOM manipulation and Events daily.",
-    likes:0,
-    comments:[]
-},
-
-{
-    id:3,
-    title:"Why Learn Java?",
-    author:"Admin",
-    image:"https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800",
-    content:"Java is widely used in enterprise software, Android apps and backend development.",
-    likes:0,
-    comments:[]
+    localStorage.setItem("blogs", JSON.stringify(blogs));
 }
 
-];
+// ---------------- HOME PAGE ----------------
 
-localStorage.setItem("blogs", JSON.stringify(blogs));
+function loadBlogs() {
 
+    const container = document.getElementById("blogContainer");
 
-// Home Page
+    if (!container) return;
 
-function loadBlogs(){
+    blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
-const container=document.getElementById("blogContainer");
+    container.innerHTML = "";
 
-if(!container) return;
+    blogs.forEach(blog => {
 
-container.innerHTML="";
+        container.innerHTML += `
+        <div class="blog-card">
 
-blogs=JSON.parse(localStorage.getItem("blogs"));
+            <img src="${blog.image}" alt="${blog.title}">
 
-blogs.forEach(blog=>{
+            <div class="blog-content">
 
-container.innerHTML+=`
+                <h2>${blog.title}</h2>
 
-<div class="blog-card">
+                <p>${blog.content.substring(0,120)}...</p>
 
-<img src="${blog.image}" alt="">
+                <div class="blog-info">
+                    <span>👤 ${blog.author}</span>
+                    <span>❤️ ${blog.likes}</span>
+                </div>
 
-<div class="blog-content">
+                <div class="blog-actions">
 
-<h2>${blog.title}</h2>
+                    <button class="like-btn"
+                    onclick="likeBlog(${blog.id})">
+                    Like
+                    </button>
 
-<p>${blog.content.substring(0,100)}...</p>
+                    <button class="delete-btn"
+                    onclick="deleteBlog(${blog.id})">
+                    Delete
+                    </button>
 
-<div class="blog-info">
+                    <a class="read-btn"
+                    href="post.html?id=${blog.id}">
+                    Read More
+                    </a>
 
-<span>👤 ${blog.author}</span>
+                </div>
 
-<span>❤️ ${blog.likes}</span>
+            </div>
 
-</div>
-
-<div class="blog-actions">
-
-<button class="like-btn" onclick="likeBlog(${blog.id})">
-Like
-</button>
-
-<button class="delete-btn" onclick="deleteBlog(${blog.id})">
-Delete
-</button>
-
-<a href="post.html?id=${blog.id}" class="read-btn">
-Read More
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-});
+        </div>
+        `;
+    });
 
 }
 
 loadBlogs();
 
+// ---------------- SEARCH ----------------
 
-// Search
+function searchBlogs() {
 
-function searchBlogs(){
+    const input = document.getElementById("searchInput");
 
-let input=document.getElementById("searchInput").value.toLowerCase();
+    if (!input) return;
 
-let cards=document.querySelectorAll(".blog-card");
+    const value = input.value.toLowerCase();
 
-cards.forEach(card=>{
+    const cards = document.querySelectorAll(".blog-card");
 
-let title=card.querySelector("h2").innerText.toLowerCase();
+    cards.forEach(card => {
 
-if(title.includes(input))
+        const title = card.querySelector("h2").innerText.toLowerCase();
 
-card.style.display="block";
+        card.style.display =
+            title.includes(value) ? "block" : "none";
 
-else
-
-card.style.display="none";
-
-});
+    });
 
 }
 
+// ---------------- LIKE ----------------
 
+function likeBlog(id) {
 
-// Like
+    blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
-function likeBlog(id){
+    const blog = blogs.find(b => b.id === id);
 
-blogs=JSON.parse(localStorage.getItem("blogs"));
+    if (blog) {
 
-let blog=blogs.find(b=>b.id===id);
+        blog.likes++;
 
-blog.likes++;
+        localStorage.setItem("blogs", JSON.stringify(blogs));
 
-localStorage.setItem("blogs",JSON.stringify(blogs));
+        location.reload();
 
-location.reload();
-
-}
-
-
-
-// Delete
-
-function deleteBlog(id){
-
-if(confirm("Delete this blog?")){
-
-blogs=blogs.filter(blog=>blog.id!==id);
-
-localStorage.setItem("blogs",JSON.stringify(blogs));
-
-location.reload();
+    }
 
 }
 
-}
+// ---------------- DELETE ----------------
 
+function deleteBlog(id) {
 
+    if (!confirm("Delete this blog?")) return;
 
-// Create Blog
+    blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
-function publishBlog(){
+    blogs = blogs.filter(blog => blog.id !== id);
 
-let title=document.getElementById("title").value;
+    localStorage.setItem("blogs", JSON.stringify(blogs));
 
-let author=document.getElementById("author").value;
-
-let image=document.getElementById("image").value;
-
-let content=document.getElementById("content").value;
-
-if(title=="" || author=="" || image=="" || content==""){
-
-alert("Please fill all fields");
-
-return;
+    location.reload();
 
 }
 
-blogs=JSON.parse(localStorage.getItem("blogs"));
+// ---------------- CREATE BLOG ----------------
 
-blogs.unshift({
+function publishBlog() {
 
-id:Date.now(),
+    const title = document.getElementById("title").value.trim();
+    const author = document.getElementById("author").value.trim();
+    const image = document.getElementById("image").value.trim();
+    const content = document.getElementById("content").value.trim();
 
-title,
+    if (!title || !author || !image || !content) {
 
-author,
+        alert("Please fill all fields");
 
-image,
+        return;
 
-content,
+    }
 
-likes:0,
+    blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
-comments:[]
+    blogs.unshift({
 
-});
+        id: Date.now(),
 
-localStorage.setItem("blogs",JSON.stringify(blogs));
+        title,
 
-alert("Blog Published Successfully!");
+        author,
 
-window.location="index.html";
+        image,
 
-}
+        content,
 
+        likes: 0,
 
+        comments: []
 
-// View Blog
+    });
 
-function loadPost(){
+    localStorage.setItem("blogs", JSON.stringify(blogs));
 
-let container=document.getElementById("postContainer");
+    alert("Blog Published Successfully!");
 
-if(!container) return;
-
-let params=new URLSearchParams(window.location.search);
-
-let id=parseInt(params.get("id"));
-
-blogs=JSON.parse(localStorage.getItem("blogs"));
-
-let blog=blogs.find(b=>b.id===id);
-
-if(!blog){
-
-container.innerHTML="<h2>Blog Not Found</h2>";
-
-return;
+    window.location.href = "index.html";
 
 }
 
-let commentsHTML="";
+// ---------------- VIEW BLOG ----------------
 
-blog.comments.forEach(c=>{
+function loadPost() {
 
-commentsHTML+=`
+    const container = document.getElementById("postContainer");
 
-<div class="comment">
+    if (!container) return;
 
-<h4>${c.name}</h4>
+    const params = new URLSearchParams(window.location.search);
 
-<p>${c.text}</p>
+    const id = Number(params.get("id"));
 
-</div>
+    blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
-`;
+    const blog = blogs.find(b => b.id === id);
 
-});
+    if (!blog) {
 
-container.innerHTML=`
+        container.innerHTML = "<h2>Blog Not Found</h2>";
 
-<div class="blog-card">
+        return;
 
-<img src="${blog.image}">
+    }
 
-<div class="blog-content">
+    let comments = "";
 
-<h2>${blog.title}</h2>
+    blog.comments.forEach(comment => {
 
-<p>${blog.content}</p>
+        comments += `
+        <div class="comment">
+            <h4>${comment.name}</h4>
+            <p>${comment.text}</p>
+        </div>
+        `;
 
-<br>
+    });
 
-<button class="like-btn" onclick="likeBlog(${blog.id})">
-❤️ Like (${blog.likes})
-</button>
+    container.innerHTML = `
 
-<div class="comment-box">
+    <div class="blog-card">
 
-<h3>Comments</h3>
+        <img src="${blog.image}">
 
-${commentsHTML}
+        <div class="blog-content">
 
-<input
-type="text"
-id="commentName"
-placeholder="Your Name"
-style="width:100%;padding:10px;margin-top:15px;">
+            <h2>${blog.title}</h2>
 
-<textarea
-id="commentText"
-placeholder="Write Comment..."
-style="margin-top:10px;"></textarea>
+            <p>${blog.content}</p>
 
-<button
-class="submit-btn"
-onclick="addComment(${blog.id})"
-style="margin-top:10px;">
-Post Comment
-</button>
+            <br>
 
-</div>
+            <button class="like-btn"
+            onclick="likeBlog(${blog.id})">
 
-</div>
+            ❤️ Like (${blog.likes})
 
-</div>
+            </button>
 
-`;
+            <div class="comment-box">
+
+                <h3>Comments</h3>
+
+                ${comments}
+
+                <input
+                type="text"
+                id="commentName"
+                placeholder="Your Name"
+                style="width:100%;padding:10px;margin-top:15px;">
+
+                <textarea
+                id="commentText"
+                placeholder="Write your comment..."
+                rows="4"
+                style="margin-top:10px;width:100%;"></textarea>
+
+                <button
+                class="submit-btn"
+                style="margin-top:10px;"
+                onclick="addComment(${blog.id})">
+
+                Post Comment
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
 
 }
 
 loadPost();
 
+// ---------------- COMMENTS ----------------
 
+function addComment(id) {
 
-// Add Comment
+    const name = document.getElementById("commentName").value.trim();
 
-function addComment(id){
+    const text = document.getElementById("commentText").value.trim();
 
-let name=document.getElementById("commentName").value;
+    if (!name || !text) {
 
-let text=document.getElementById("commentText").value;
+        alert("Please enter your name and comment.");
 
-if(name=="" || text==""){
+        return;
 
-alert("Enter Name and Comment");
+    }
 
-return;
+    blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
-}
+    const blog = blogs.find(b => b.id === id);
 
-blogs=JSON.parse(localStorage.getItem("blogs"));
+    if (!blog) return;
 
-let blog=blogs.find(b=>b.id===id);
+    blog.comments.push({
 
-blog.comments.push({
+        name,
 
-name:name,
+        text
 
-text:text
+    });
 
-});
+    localStorage.setItem("blogs", JSON.stringify(blogs));
 
-localStorage.setItem("blogs",JSON.stringify(blogs));
-
-location.reload();
+    location.reload();
 
 }
