@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog - Blog Platform</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        <i class="fa-solid fa-blog"></i>
+        Blog Platform
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="create.html" class="active">Create Blog</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+    </ul>
+
+</nav>
+
+<div class="form-container">
+
+    <h2>Create New Blog</h2>
+
+    <form id="blogForm">
+
+        <div class="form-group">
+            <label>Blog Title</label>
+            <input
+                type="text"
+                id="title"
+                placeholder="Enter Blog Title"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label>Author Name</label>
+            <input
+                type="text"
+                id="author"
+                placeholder="Enter Author Name"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label>Image URL</label>
+            <input
+                type="url"
+                id="image"
+                placeholder="Paste Image URL"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select id="category">
+                <option>Technology</option>
+                <option>Education</option>
+                <option>Programming</option>
+                <option>Travel</option>
+                <option>Food</option>
+                <option>Sports</option>
+                <option>Health</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Blog Content</label>
+
+            <textarea
+                id="content"
+                rows="8"
+                placeholder="Write your blog here..."
+                required></textarea>
+        </div>
+
+        <button
+            type="submit"
+            class="submit-btn">
+            Publish Blog
+        </button>
+
+    </form>
+
+</div>
+
+<script src="js/script.js"></script>
+
+<script>
+
+document.getElementById("blogForm").addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    publishBlog();
+
+});
+
+</script>
+
+</body>
+</html>
