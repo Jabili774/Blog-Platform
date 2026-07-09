@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Blog Platform</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-blog"></i>
+        Blog Platform
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="create.html">Create Blog</a></li>
+        <li><a href="login.html" class="active">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+    </ul>
+</nav>
+
+<div class="form-container">
+
+    <h2>Login</h2>
+
+    <form onsubmit="loginUser(event)">
+
+        <div class="form-group">
+            <label>Email</label>
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter Email"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter Password"
+                required>
+        </div>
+
+        <button class="submit-btn">
+            Login
+        </button>
+
+    </form>
+
+    <br>
+
+    <p style="text-align:center;">
+        Don't have an account?
+        <a href="register.html">Register</a>
+    </p>
+
+</div>
+
+<script>
+
+function loginUser(e){
+
+e.preventDefault();
+
+let email=document.getElementById("loginEmail").value;
+
+let password=document.getElementById("loginPassword").value;
+
+let users=JSON.parse(localStorage.getItem("users"))||[];
+
+let user=users.find(u=>u.email===email && u.password===password);
+
+if(user){
+
+localStorage.setItem("loggedInUser",JSON.stringify(user));
+
+alert("Login Successful!");
+
+window.location="index.html";
+
+}
+
+else{
+
+alert("Invalid Email or Password");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
